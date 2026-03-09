@@ -25,7 +25,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/eslint-plugin-astro-standards.git"
+    "url": "https://github.com/ErickCSS/eslint-plugin-astro-standards"
   },
   "scripts": {
     "build": "tsup",
