@@ -1,6 +1,6 @@
 import astro from "eslint-plugin-astro";
 import jsxA11y from "eslint-plugin-jsx-a11y";
-import companyAstro from "./eslint/plugin.js";
+import companyAstro from "./dist/plugin.js";
 
 export default [
   ...astro.configs.recommended,

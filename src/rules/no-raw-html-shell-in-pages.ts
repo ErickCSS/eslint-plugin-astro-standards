@@ -1,6 +1,7 @@
+import type { Rule } from "eslint";
 import { getSourceCode, isAstroPageFile } from "./utils.js";
 
-export default {
+const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
     docs: {
@@ -31,7 +32,7 @@ export default {
           { regex: /<html[\s>]/i, messageId: "noHtml" },
           { regex: /<head[\s>]/i, messageId: "noHead" },
           { regex: /<body[\s>]/i, messageId: "noBody" },
-        ];
+        ] as const;
 
         for (const check of checks) {
           const match = check.regex.exec(source);
@@ -48,3 +49,5 @@ export default {
     };
   },
 };
+
+export default rule;

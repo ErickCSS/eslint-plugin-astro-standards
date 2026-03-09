@@ -1,14 +1,20 @@
+import type { Rule } from "eslint";
 import { getSourceCode, isAstroPageFile } from "./utils.js";
 
-function escapeRegExp(value) {
+function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-export default {
+interface RuleOptions {
+  layoutName?: string;
+  requiredProps?: string[];
+}
+
+const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
     docs: {
-      description: "Require SEO props on BaseLayout usage in Astro pages"
+      description: "Require SEO props on BaseLayout usage in Astro pages",
     },
     schema: [
       {
@@ -17,22 +23,23 @@ export default {
           layoutName: { type: "string" },
           requiredProps: {
             type: "array",
-            items: { type: "string" }
-          }
+            items: { type: "string" },
+          },
         },
-        additionalProperties: false
-      }
+        additionalProperties: false,
+      },
     ],
     messages: {
-      missingProp: "The layout '{{layoutName}}' must receive the prop '{{propName}}'."
-    }
+      missingProp: "The layout '{{layoutName}}' must receive the prop '{{propName}}'.",
+    },
   },
 
   create(context) {
     const filename = context.filename ?? context.getFilename?.() ?? "";
     if (!isAstroPageFile(filename)) return {};
 
-    const [{ layoutName = "BaseLayout", requiredProps = ["title", "description"] } = {}] = context.options;
+    const [{ layoutName = "BaseLayout", requiredProps = ["title", "description"] } = {} as RuleOptions] =
+      context.options as RuleOptions[];
 
     return {
       Program(node) {
@@ -42,18 +49,20 @@ export default {
         if (!layoutMatch) return;
 
         const openingTag = layoutMatch[0];
-        for (const propName of requiredProps) {
+        for (const propName of requiredProps!) {
           const safePropName = escapeRegExp(propName);
           const propRegex = new RegExp(`\\b${safePropName}\\s*=`, "m");
           if (!propRegex.test(openingTag)) {
             context.report({
               node,
               messageId: "missingProp",
-              data: { layoutName, propName }
+              data: { layoutName, propName },
             });
           }
         }
-      }
+      },
     };
-  }
+  },
 };
+
+export default rule;
