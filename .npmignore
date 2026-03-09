@@ -1,0 +1,9 @@
+src/
+node_modules/
+pnpm-lock.yaml
+.vscode/
+.idea/
+*.log
+.DS_Store
+instrucction.md
+eslint.config.mjs
