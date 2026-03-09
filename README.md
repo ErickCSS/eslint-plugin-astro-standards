@@ -43,30 +43,15 @@ import astroStandards from "eslint-plugin-astro-standards";
 export default [
   ...astro.configs.recommended,
   {
-    files: ["src/pages/**/*.astro"],
+    ...astroStandards.configs.recommended,
     plugins: {
       "astro-standards": astroStandards,
-    },
-    rules: {
-      "astro-standards/no-raw-html-shell-in-pages": "error",
-      "astro-standards/require-base-layout-in-pages": [
-        "error",
-        {
-          layoutName: "BaseLayout",
-          layoutFile: "BaseLayout.astro",
-        },
-      ],
-      "astro-standards/require-layout-seo-props": [
-        "error",
-        {
-          layoutName: "BaseLayout",
-          requiredProps: ["title", "description"],
-        },
-      ],
     },
   },
 ];
 ```
+
+That's it! The plugin automatically enables all rules with sensible defaults.
 
 > **Optional:** If you also want strict accessibility rules, you can add `eslint-plugin-jsx-a11y` and use `...astro.configs["jsx-a11y-strict"]`.
 
@@ -233,33 +218,43 @@ Add these scripts to your `package.json`:
 
 ## 🔧 Customization
 
-You can adjust the rules according to your needs:
+If you need to customize the default configuration, you can override specific rules:
 
 ```js
-{
-  rules: {
-    // Change the layout name
-    "astro-standards/require-base-layout-in-pages": [
-      "error",
-      {
-        layoutName: "MainLayout",
-        layoutFile: "MainLayout.astro"
-      }
-    ],
+import astro from "eslint-plugin-astro";
+import astroStandards from "eslint-plugin-astro-standards";
 
-    // Add more required props
-    "astro-standards/require-layout-seo-props": [
-      "error",
-      {
-        layoutName: "BaseLayout",
-        requiredProps: ["title", "description", "ogImage"]
-      }
-    ],
+export default [
+  ...astro.configs.recommended,
+  {
+    ...astroStandards.configs.recommended,
+    plugins: {
+      "astro-standards": astroStandards,
+    },
+    rules: {
+      // Change the layout name
+      "astro-standards/require-base-layout-in-pages": [
+        "error",
+        {
+          layoutName: "MainLayout",
+          layoutFile: "MainLayout.astro",
+        },
+      ],
 
-    // Disable a specific rule
-    "astro-standards/no-raw-html-shell-in-pages": "off"
-  }
-}
+      // Add more required props
+      "astro-standards/require-layout-seo-props": [
+        "error",
+        {
+          layoutName: "BaseLayout",
+          requiredProps: ["title", "description", "ogImage"],
+        },
+      ],
+
+      // Disable a specific rule
+      "astro-standards/no-raw-html-shell-in-pages": "off",
+    },
+  },
+];
 ```
 
 ## 🤝 Contributing
