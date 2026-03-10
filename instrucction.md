@@ -2,7 +2,7 @@
 
 Guía completa para crear un **plugin ESLint personalizado** que extiende `eslint-plugin-astro` y obliga buenas prácticas en proyectos Astro:
 
-- Uso obligatorio de `BaseLayout`
+- Uso obligatorio de `Layout`
 - Prohibido `<html>`, `<head>`, `<body>` en páginas
 - SEO obligatorio vía props (`title`, `description`)
 - Extensible con más reglas
@@ -26,7 +26,7 @@ require-layout-seo-props.js
 plugin.js
 src/
 layouts/
-BaseLayout.astro
+Layout.astro
 pages/
 index.astro
 eslint.config.mjs
@@ -35,13 +35,13 @@ package.json
 ## 2. Crear el plugin
 
 import noRawHtmlShellInPages from "./rules/no-raw-html-shell-in-pages.js";
-import requireBaseLayoutInPages from "./rules/require-base-layout-in-pages.js";
+import requireLayoutInPages from "./rules/require-base-layout-in-pages.js";
 import requireLayoutSeoProps from "./rules/require-layout-seo-props.js";
 
 export default {
 rules: {
 "no-raw-html-shell-in-pages": noRawHtmlShellInPages,
-"require-base-layout-in-pages": requireBaseLayoutInPages,
+"require-base-layout-in-pages": requireLayoutInPages,
 "require-layout-seo-props": requireLayoutSeoProps,
 },
 };
