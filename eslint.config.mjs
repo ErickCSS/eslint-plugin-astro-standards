@@ -1,5 +1,7 @@
 import astro from "eslint-plugin-astro";
 import jsxA11y from "eslint-plugin-jsx-a11y";
+import unusedImports from "eslint-plugin-unused-imports";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
 import companyAstro from "./dist/plugin.js";
 
 export default [
@@ -10,6 +12,8 @@ export default [
     plugins: {
       astro,
       "jsx-a11y": jsxA11y,
+      "unused-imports": unusedImports,
+      "simple-import-sort": simpleImportSort,
       "company-astro": companyAstro
     },
     rules: {
@@ -27,7 +31,14 @@ export default [
           layoutName: "BaseLayout",
           requiredProps: ["title", "description"]
         }
-      ]
+      ],
+      "prefer-const": "error",
+      "eqeqeq": ["error", "always"],
+      "curly": ["error", "all"],
+      "no-duplicate-imports": "error",
+      "unused-imports/no-unused-imports": "error",
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error"
     }
   }
 ];
