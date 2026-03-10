@@ -10,8 +10,7 @@ const rule: Rule.RuleModule = {
     },
     schema: [],
     messages: {
-      singleH1:
-        "Each Astro page must have exactly one <h1>. Found {{count}}.",
+      singleH1: "Each Astro page must have exactly one <h1>. Found {{count}}.",
       skippedLevel:
         "Heading level skipped: <h{{found}}> after <h{{previous}}>. Expected <h{{expected}}> or lower.",
     },
@@ -19,7 +18,9 @@ const rule: Rule.RuleModule = {
 
   create(context) {
     const filename = context.filename ?? context.getFilename?.() ?? "";
-    if (!isAstroPageFile(filename)) {return {};}
+    if (!isAstroPageFile(filename)) {
+      return {};
+    }
 
     return {
       Program(node) {
@@ -43,16 +44,25 @@ const rule: Rule.RuleModule = {
           });
         }
 
+        // Detect imported components used in the template (PascalCase tags like <Hero />, <PageHeader>)
+        // These components may contain headings internally, so we can't enforce h1 presence
+        const componentTagRegex = /<([A-Z][A-Za-z0-9]*)[\s/>]/g;
+        let hasImportedComponents = false;
+        while (componentTagRegex.exec(template) !== null) {
+          hasImportedComponents = true;
+          break;
+        }
+
         // Rule 1: exactly one <h1>
         const h1Count = headings.filter((h) => h.level === 1).length;
         if (h1Count !== 1) {
-          if (h1Count === 0) {
+          if (h1Count === 0 && !hasImportedComponents) {
             context.report({
               node,
               messageId: "singleH1",
               data: { count: "0" },
             });
-          } else {
+          } else if (h1Count > 1) {
             // Report on every h1 beyond the first one
             const h1Headings = headings.filter((h) => h.level === 1);
             for (let i = 1; i < h1Headings.length; i++) {

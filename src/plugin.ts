@@ -3,6 +3,7 @@ import noRawHtmlShellInPages from "./rules/no-raw-html-shell-in-pages.js";
 import requireBaseLayoutInPages from "./rules/require-base-layout-in-pages.js";
 import requireLayoutSeoProps from "./rules/require-layout-seo-props.js";
 import requireHeadingHierarchy from "./rules/require-heading-hierarchy.js";
+import requirePascalcaseComponents from "./rules/require-pascalcase-components.js";
 import unusedImportsPlugin from "eslint-plugin-unused-imports";
 import simpleImportSortPlugin from "eslint-plugin-simple-import-sort";
 import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
@@ -13,6 +14,7 @@ const plugin: ESLint.Plugin = {
     "require-base-layout-in-pages": requireBaseLayoutInPages,
     "require-layout-seo-props": requireLayoutSeoProps,
     "require-heading-hierarchy": requireHeadingHierarchy,
+    "require-pascalcase-components": requirePascalcaseComponents,
   },
   configs: {},
 };
@@ -60,6 +62,22 @@ const recommended: Linter.FlatConfig = {
   },
 };
 
+const components: Linter.FlatConfig = {
+  files: ["src/components/**/*.astro"],
+  ignores: [
+    "src/components/**/utils/**",
+    "src/components/**/libs/**",
+    "src/components/**/config/**",
+  ],
+  plugins: {
+    "astro-standards": plugin,
+  },
+  rules: {
+    "astro-standards/require-pascalcase-components": "error",
+  },
+};
+
 plugin.configs!.recommended = recommended;
+plugin.configs!.components = components;
 
 export default plugin;
