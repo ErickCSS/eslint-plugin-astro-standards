@@ -14,7 +14,7 @@ const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
     docs: {
-      description: "Require SEO props on BaseLayout usage in Astro pages",
+      description: "Require SEO props on Layout usage in Astro pages",
     },
     schema: [
       {
@@ -30,23 +30,35 @@ const rule: Rule.RuleModule = {
       },
     ],
     messages: {
-      missingProp: "The layout '{{layoutName}}' must receive the prop '{{propName}}'.",
+      missingProp:
+        "The layout '{{layoutName}}' must receive the prop '{{propName}}'.",
     },
   },
 
   create(context) {
     const filename = context.filename ?? context.getFilename?.() ?? "";
-    if (!isAstroPageFile(filename)) {return {};}
+    if (!isAstroPageFile(filename)) {
+      return {};
+    }
 
-    const [{ layoutName = "BaseLayout", requiredProps = ["title", "description"] } = {} as RuleOptions] =
-      context.options as RuleOptions[];
+    const [
+      {
+        layoutName = "Layout",
+        requiredProps = ["title", "description"],
+      } = {} as RuleOptions,
+    ] = context.options as RuleOptions[];
 
     return {
       Program(node) {
         const source = getSourceCode(context).getText();
         const safeLayoutName = escapeRegExp(layoutName);
-        const layoutMatch = new RegExp(`<${safeLayoutName}\\b([\\s\\S]*?)>`, "m").exec(source);
-        if (!layoutMatch) {return;}
+        const layoutMatch = new RegExp(
+          `<${safeLayoutName}\\b([\\s\\S]*?)>`,
+          "m",
+        ).exec(source);
+        if (!layoutMatch) {
+          return;
+        }
 
         const openingTag = layoutMatch[0];
         for (const propName of requiredProps!) {

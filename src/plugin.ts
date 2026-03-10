@@ -37,14 +37,14 @@ const recommended: Linter.FlatConfig = {
     "astro-standards/require-base-layout-in-pages": [
       "error",
       {
-        layoutName: "BaseLayout",
-        layoutFile: "BaseLayout.astro",
+        layoutName: "Layout",
+        layoutFile: "Layout.astro",
       },
     ],
     "astro-standards/require-layout-seo-props": [
       "error",
       {
-        layoutName: "BaseLayout",
+        layoutName: "Layout",
         requiredProps: ["title", "description"],
       },
     ],
