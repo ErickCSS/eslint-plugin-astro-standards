@@ -34,7 +34,7 @@ const rule: Rule.RuleModule = {
 
   create(context) {
     const filename = context.filename ?? context.getFilename?.() ?? "";
-    if (!isAstroPageFile(filename)) return {};
+    if (!isAstroPageFile(filename)) {return {};}
 
     const [{ layoutName = "BaseLayout", layoutFile = "BaseLayout.astro" } = {} as RuleOptions] =
       context.options as RuleOptions[];

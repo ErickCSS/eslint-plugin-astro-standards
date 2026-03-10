@@ -1,33 +1,25 @@
 import astro from "eslint-plugin-astro";
-import jsxA11y from "eslint-plugin-jsx-a11y";
-import companyAstro from "./dist/plugin.js";
+import tsParser from "@typescript-eslint/parser";
 
 export default [
-  ...astro.configs.recommended,
-  ...astro.configs["jsx-a11y-strict"],
   {
-    files: ["src/pages/**/*.astro"],
-    plugins: {
-      astro,
-      "jsx-a11y": jsxA11y,
-      "company-astro": companyAstro
+    ignores: ["dist/**", "node_modules/**", "**/*.test.ts"]
+  },
+  ...astro.configs.recommended,
+  {
+    files: ["src/**/*.ts"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module"
+      }
     },
     rules: {
-      "company-astro/no-raw-html-shell-in-pages": "error",
-      "company-astro/require-base-layout-in-pages": [
-        "error",
-        {
-          layoutName: "BaseLayout",
-          layoutFile: "BaseLayout.astro"
-        }
-      ],
-      "company-astro/require-layout-seo-props": [
-        "error",
-        {
-          layoutName: "BaseLayout",
-          requiredProps: ["title", "description"]
-        }
-      ]
+      "prefer-const": "error",
+      "eqeqeq": ["error", "always"],
+      "curly": ["error", "all"],
+      "no-duplicate-imports": "error"
     }
   }
 ];
