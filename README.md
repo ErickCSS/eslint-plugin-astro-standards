@@ -42,18 +42,11 @@ import astroStandards from "eslint-plugin-astro-standards";
 
 export default [
   ...astro.configs.recommended,
-  {
-    ...astroStandards.configs.recommended,
-    plugins: {
-      "astro-standards": astroStandards,
-    },
-  },
+  astroStandards.configs.recommended,
 ];
 ```
 
-That's it! The plugin automatically enables all rules with sensible defaults.
-
-> **Optional:** If you also want strict accessibility rules, you can add `eslint-plugin-jsx-a11y` and use `...astro.configs["jsx-a11y-strict"]`.
+That's it! The plugin automatically registers itself and all required plugins (`unused-imports`, `simple-import-sort`, `jsx-a11y`) with sensible defaults. No extra imports needed.
 
 ## 📋 Rules
 
@@ -228,10 +221,8 @@ export default [
   ...astro.configs.recommended,
   {
     ...astroStandards.configs.recommended,
-    plugins: {
-      "astro-standards": astroStandards,
-    },
     rules: {
+      ...astroStandards.configs.recommended.rules,
       // Change the layout name
       "astro-standards/require-base-layout-in-pages": [
         "error",
