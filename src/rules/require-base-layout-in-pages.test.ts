@@ -15,21 +15,21 @@ describe("require-base-layout-in-pages", () => {
       valid: [
         {
           code: `---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import Layout from "../layouts/Layout.astro";
 ---
-<BaseLayout title="Home" description="Home page">
+<Layout title="Home" description="Home page">
   <h1>Welcome</h1>
-</BaseLayout>`,
+</Layout>`,
           filename: "src/pages/index.astro",
         },
         {
           code: `---
-import BaseLayout from "~/layouts/BaseLayout.astro";
+import Layout from "~/layouts/Layout.astro";
 const title = "About";
 ---
-<BaseLayout title={title} description="About page">
+<Layout title={title} description="About page">
   <p>Content</p>
-</BaseLayout>`,
+</Layout>`,
           filename: "src/pages/about.astro",
         },
         {
@@ -40,7 +40,9 @@ import MainLayout from "../layouts/MainLayout.astro";
   <h1>Custom</h1>
 </MainLayout>`,
           filename: "src/pages/custom.astro",
-          options: [{ layoutName: "MainLayout", layoutFile: "MainLayout.astro" }],
+          options: [
+            { layoutName: "MainLayout", layoutFile: "MainLayout.astro" },
+          ],
         },
         {
           code: `<div>No layout needed</div>`,
@@ -62,7 +64,7 @@ import MainLayout from "../layouts/MainLayout.astro";
         },
         {
           code: `---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import Layout from "../layouts/Layout.astro";
 ---
 <div>
   <h1>Imported but not used</h1>
@@ -74,9 +76,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           code: `---
 const title = "Test";
 ---
-<BaseLayout title={title} description="Test">
+<Layout title={title} description="Test">
   <h1>Used but not imported</h1>
-</BaseLayout>`,
+</Layout>`,
           filename: "src/pages/notimported.astro",
           errors: [{ messageId: "missingImport" }],
         },

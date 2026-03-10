@@ -14,7 +14,7 @@ const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
     docs: {
-      description: "Require Astro pages to use BaseLayout.astro",
+      description: "Require Astro pages to use Layout.astro",
     },
     schema: [
       {
@@ -27,17 +27,25 @@ const rule: Rule.RuleModule = {
       },
     ],
     messages: {
-      missingImport: "Every Astro page must import '{{layoutName}}' from '{{layoutFile}}'.",
-      missingUsage: "Every Astro page must use '{{layoutName}}' as the main wrapper.",
+      missingImport:
+        "Every Astro page must import '{{layoutName}}' from '{{layoutFile}}'.",
+      missingUsage:
+        "Every Astro page must use '{{layoutName}}' as the main wrapper.",
     },
   },
 
   create(context) {
     const filename = context.filename ?? context.getFilename?.() ?? "";
-    if (!isAstroPageFile(filename)) {return {};}
+    if (!isAstroPageFile(filename)) {
+      return {};
+    }
 
-    const [{ layoutName = "BaseLayout", layoutFile = "BaseLayout.astro" } = {} as RuleOptions] =
-      context.options as RuleOptions[];
+    const [
+      {
+        layoutName = "Layout",
+        layoutFile = "Layout.astro",
+      } = {} as RuleOptions,
+    ] = context.options as RuleOptions[];
 
     return {
       Program(node) {
@@ -47,7 +55,7 @@ const rule: Rule.RuleModule = {
 
         const importRegex = new RegExp(
           `import\\s+${safeLayoutName}\\s+from\\s+["'][^"']*${safeLayoutFile}["']`,
-          "m"
+          "m",
         );
         const usageRegex = new RegExp(`<${safeLayoutName}[\\s>]`, "m");
 
