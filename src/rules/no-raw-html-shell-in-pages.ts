@@ -21,7 +21,7 @@ const rule: Rule.RuleModule = {
 
   create(context) {
     const filename = context.filename ?? context.getFilename?.() ?? "";
-    if (!isAstroPageFile(filename)) return {};
+    if (!isAstroPageFile(filename)) {return {};}
 
     return {
       Program(node) {
@@ -36,7 +36,7 @@ const rule: Rule.RuleModule = {
 
         for (const check of checks) {
           const match = check.regex.exec(source);
-          if (!match) continue;
+          if (!match) {continue;}
 
           const loc = sourceCode.getLocFromIndex(match.index);
           context.report({

@@ -1,7 +1,7 @@
 import type { Rule } from "eslint";
 
 export function isAstroPageFile(filename: string): boolean {
-  if (!filename || typeof filename !== "string") return false;
+  if (!filename || typeof filename !== "string") {return false;}
   return filename.endsWith(".astro") && /[\\/]src[\\/]pages[\\/]/.test(filename);
 }
 

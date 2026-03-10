@@ -36,7 +36,7 @@ const rule: Rule.RuleModule = {
 
   create(context) {
     const filename = context.filename ?? context.getFilename?.() ?? "";
-    if (!isAstroPageFile(filename)) return {};
+    if (!isAstroPageFile(filename)) {return {};}
 
     const [{ layoutName = "BaseLayout", requiredProps = ["title", "description"] } = {} as RuleOptions] =
       context.options as RuleOptions[];
@@ -46,7 +46,7 @@ const rule: Rule.RuleModule = {
         const source = getSourceCode(context).getText();
         const safeLayoutName = escapeRegExp(layoutName);
         const layoutMatch = new RegExp(`<${safeLayoutName}\\b([\\s\\S]*?)>`, "m").exec(source);
-        if (!layoutMatch) return;
+        if (!layoutMatch) {return;}
 
         const openingTag = layoutMatch[0];
         for (const propName of requiredProps!) {

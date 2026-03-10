@@ -19,7 +19,7 @@ const rule: Rule.RuleModule = {
 
   create(context) {
     const filename = context.filename ?? context.getFilename?.() ?? "";
-    if (!isAstroPageFile(filename)) return {};
+    if (!isAstroPageFile(filename)) {return {};}
 
     return {
       Program(node) {
